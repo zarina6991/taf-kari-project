@@ -1,4 +1,4 @@
-package fixprice;
+package kari;
 
 public class HomeTest {
 }
