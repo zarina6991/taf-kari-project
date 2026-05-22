@@ -1,9 +1,10 @@
 package kari.api.search;
 
 import io.restassured.response.Response;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import jdk.jfr.Description;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.lessThan;
@@ -13,33 +14,37 @@ public class SearchApiTest {
 
     private SearchApiSteps searchApiSteps;
 
-    @BeforeClass
+    @BeforeEach
     public void setUpForSearch() {
         searchApiSteps = new SearchApiSteps();
     }
 
-    @Test(description = "Поиск товара по валидному запросу должен возвращать успешный ответ")
+    @Description("Поиск товара по валидному запросу должен возвращать успешный ответ")
+    @Test
     public void searchByValidQueryShouldReturnSuccessResponse() {
         Response response = searchApiSteps.searchProduct("кроссовки");
 
         assertSuccessfulSearchResponse(response);
     }
 
-    @Test(description = "Поиск с пустым запросом должен возвращать успешный ответ")
+    @Description("Поиск с пустым запросом должен возвращать успешный ответ")
+    @Test
     public void searchWithEmptyQueryShouldReturn200() {
         Response response = searchApiSteps.searchProduct("");
 
         assertSuccessfulSearchResponse(response);
     }
 
-    @Test(description = "Поиск по несуществующему запросу должен возвращать успешный ответ")
+    @Description( "Поиск по несуществующему запросу должен возвращать успешный ответ")
+    @Test
     public void searchWithNonExistingQueryShouldReturn200() {
         Response response = searchApiSteps.searchProduct("абракадабра123456789");
 
         assertSuccessfulSearchResponse(response);
     }
 
-    @Test(description = "Поиск со спецсимволами должен возвращать успешный ответ")
+    @Description("Поиск со спецсимволами должен возвращать успешный ответ")
+    @Test
     public void searchWithSpecialCharactersShouldReturn200() {
         Response response = searchApiSteps.searchProduct("@#$%^&*");
 
@@ -54,6 +59,6 @@ public class SearchApiTest {
                 .contentType(containsString("application/json"))
                 .body(notNullValue());
 
-        Assert.assertFalse(response.asString().isEmpty(), "Тело ответа не должно быть пустым");
+        Assertions.assertFalse(response.asString().isEmpty(), "Тело ответа не должно быть пустым");
     }
 }

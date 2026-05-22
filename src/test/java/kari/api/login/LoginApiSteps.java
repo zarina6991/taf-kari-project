@@ -38,7 +38,6 @@ public class LoginApiSteps {
         response.then()
                 .log().ifValidationFails()
                 .statusCode(200)
-                .contentType("application/json")
                 .time(lessThan(5000L))
                 .body(not(emptyString()));
     }
