@@ -1,39 +1,44 @@
 package kari.api.login;
-
+import org.junit.jupiter.api.Assertions;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.not;
 
-public class LoginApiPositiveTest {
+public class LoginApiPositiveTest extends LoginApiBaseTest {
 
-    private static final String BASE_URL = "https://i.api.kari.com";
     private static final String LOGIN_ENDPOINT = "/ecommerce/client/login";
 
-    @Test
+    @Test(description = "Логин с валидными данными должен возвращать 200")
     public void loginWithValidCredentialsShouldReturn200() {
         String login = System.getProperty("kari.login");
         String password = System.getProperty("kari.password");
 
+        Assertions.assertNotNull(login, "Не передан логин. Добавь -Dkari.login=...");
+        Assertions.assertNotNull(password, "Не передан пароль. Добавь -Dkari.password=...");
+
+        logger.info("Отправляем запрос на авторизацию пользователя: {}", login);
+
         given()
-                .log().all()
-                .baseUri(BASE_URL)
-                .header("accept", "application/json")
-                .header("content-type", "application/json")
-                .header("origin", "https://kari.com")
-                .header("referer", "https://kari.com/")
-                .header("cookie", "KariLocationId=770000000000; KariCountry=ru; KariClientCountryConfirmed=true; KariClientLocationConfirmed=true")
-                .body(String.format("""
-                        {
-                          "login": "%s",
-                          "password": "%s"
-                        }
-                        """, login, password))
+                .spec(requestSpec)
+                .body(createLoginBody(login, password))
                 .when()
                 .post(LOGIN_ENDPOINT)
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .body(not(emptyString()));
+
+        logger.info("Авторизация успешно выполнена");
+    }
+
+    private String createLoginBody(String login, String password) {
+        return String.format("""
+                {
+                  "login": "%s",
+                  "password": "%s"
+                }
+                """, login, password);
     }
 }
