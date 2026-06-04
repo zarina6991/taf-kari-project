@@ -28,13 +28,10 @@ public class BasePage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath))).click();
     }
-
-    // Умное получение текста у гарантированно загрузившегося элемента
     protected String getText(String xpath) {
         return find(xpath).getText().trim();
     }
 
-    // Умная проверка видимости: возвращает true/false для ассертов в тестах без падения
     protected boolean isElementVisible(String xpath) {
         try {
             return find(xpath).isDisplayed();
