@@ -12,7 +12,7 @@ public class BaseTest {
 
     protected WebDriver driver;
 
-    protected static final String BASE_UI_URL = "https://kari.com/";
+    public static final String BASE_UI_URL = "https://kari.com/";
 
     protected static final Logger logger = LogManager.getLogger(BaseTest.class);
 
