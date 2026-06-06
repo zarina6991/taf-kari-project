@@ -39,4 +39,14 @@ public class BasePage {
             return false;
         }
     }
+
+    public static String getRequiredSystemProperty(String key) {
+        String value = System.getProperty(key);
+
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalStateException("Критическая ошибка: Системное свойство '" + key + "' не задано!");
+        }
+
+        return value;
+    }
 }

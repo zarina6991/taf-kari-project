@@ -19,40 +19,32 @@ public class LoginTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Негативный сценарий: Авторизация с неверными учетными данными")
-    public void testNegativeLoginWithInvalidCredentials() {
-        logger.info("Начало выполнения теста: Негативный сценарий авторизации");
-
-        loginPage.openLoginPage();
-        loginPage.loginWithCredentials("+79991112233", "WrongPassword123");
-
-        logger.info("Выполнение проверок (Assertions)");
-        Assertions.assertTrue(loginPage.isErrorMessageDisplayed(),
-                "Критическая ошибка: Сообщение об ошибке валидации не появилось на экране!");
-
-        String actualErrorText = loginPage.getErrorMessageText();
-        Assertions.assertFalse(actualErrorText.isEmpty(),
-                "Ошибка: Текст сообщения об ошибке оказался пустым!");
-
-        logger.info("Тест успешно завершен. Ошибка валидации обработана корректно.");
-    }
-
-    @Test
     @DisplayName("Позитивный сценарий: Успешный вход в личный кабинет")
     public void testPositiveLoginWithValidCredentials() {
         logger.info("Начало выполнения теста: Позитивный сценарий авторизации");
-
         loginPage.openLoginPage();
-        // Укажите ваши реальные тестовые данные в проекте
-        loginPage.loginWithCredentials("+79000000000", "ValidPassword123");
-
+        loginPage.loginWithSystemProperties();
         logger.info("Выполнение проверок перенаправления (Assertions)");
-        String currentUrl = driver.getCurrentUrl();
+        Assertions.assertTrue(loginPage.checkUserProfileNameIsDisplayed().contains("Заррина"),
+                "Имя авторизованного пользователя 'Заррина' не найдено на странице!");
+        Assertions.assertEquals("", loginPage.isErrorMessageDisplayed(),
+                "В позитивном сценарии отобразилось сообщение об ошибке авторизации!");
+        logger.info("Тест успешно завершен. Пользователь Заррина авторизован.");
+    }
 
-        Assertions.assertTrue(currentUrl.contains("profile") || currentUrl.contains("account"),
-                "Пользователь не был перенаправлен в личный кабинет. Текущий URL: " + currentUrl);
-
-        logger.info("Тест успешно завершен. Пользователь авторизован, URL: {}", currentUrl);
+    @Test
+    @DisplayName("Негативный сценарий: Авторизация с неверными учетными данными")
+    public void testNegativeLoginWithInvalidCredentials() {
+        logger.info("Начало выполнения теста: Негативный сценарий авторизации");
+        loginPage.openLoginPage();
+        loginPage.loginWithCredentials("+79991112233", "WrongPassword123");
+        logger.info("Выполнение проверок для негативного сценария (Assertions)");
+        String actualErrorText = loginPage.isErrorMessageDisplayed();
+        Assertions.assertFalse(actualErrorText.isEmpty(),
+                "Критическая ошибка: Сообщение об ошибке валидации не появилось на экране!");
+        Assertions.assertEquals("Неверный логин или пароль", actualErrorText,
+                "Отобразился неверный текст сообщения об ошибке!");
+        logger.info("Тест успешно завершен. Ошибка валидации обработана корректно.");
     }
 
     @Test
@@ -60,13 +52,11 @@ public class LoginTest extends BaseTest {
     public void testLoginWithEmptyFields() {
         logger.info("Начало теста: Авторизация с пустыми полями");
         driver.get(BASE_UI_URL + "auth/");
-
-        // Передаем пустые строки
         loginPage.loginWithCredentials("", "");
-
         logger.info("Выполнение проверок локальной валидации");
-        Assertions.assertTrue(loginPage.isErrorMessageDisplayed(),
+        Assertions.assertFalse(loginPage.getAnyFormErrorText().isEmpty(),
                 "Ошибка: При отправке пустой формы не появилось уведомление или подсветка полей!");
+        logger.info("Тест успешно завершен. Локальная валидация пустых полей работает.");
     }
 
     @Test
@@ -74,14 +64,9 @@ public class LoginTest extends BaseTest {
     public void testLoginWithInvalidPhoneFormat() {
         logger.info("Начало теста: Ввод некорректного формата телефона");
         driver.get(BASE_UI_URL + "auth/");
-
-        // Вводим слишком короткий номер, который точно не пройдет валидацию
         loginPage.loginWithCredentials("123", "AnyPassword123");
-
         logger.info("Проверка реакции системы на неверный формат ввода");
-        Assertions.assertTrue(loginPage.isErrorMessageDisplayed(),
+        Assertions.assertFalse(loginPage.getAnyFormErrorText().isEmpty(),
                 "Ошибка: Система не отреагировала на невалидный формат номера телефона!");
     }
-
 }
-

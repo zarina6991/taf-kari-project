@@ -3,17 +3,26 @@ package kari.ui.pages;
 import kari.ui.base.BasePage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
 import static kari.ui.tests.BaseTest.BASE_UI_URL;
 
 public class LoginPage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(LoginPage.class);
 
-    private static final String PHONE_OR_EMAIL_INPUT = "//input[@type='tel' or @type='email' or contains(@placeholder, 'телефон') or contains(@placeholder, 'Email')]";
+    private static final String PHONE_OR_EMAIL_INPUT = "//input[@placeholder='Телефон/E-mail']";
     private static final String PASSWORD_INPUT = "//input[@type='password' or contains(@placeholder, 'Пароль')]";
-    private static final String SUBMIT_LOGIN_BUTTON = "//button[@type='submit' or contains(text(), 'Войти')]";
-    private static final String ERROR_MESSAGE = "//*[contains(@class, 'error') or contains(text(), 'Неверный') or contains(text(), 'ошибка')]";
+    private static final String SUBMIT_LOGIN_BUTTON = "//button[@type='submit'][span[text()='Войти']]";
+    private static final String ERROR_MESSAGE = "//p[contains(text(), 'Некорректный номер телефона')]";
+    public static final String REQUIRED_FIELD_ERROR = "//p[@color='error' and text()='Обязательное поле']";
+    public static final String USER_PROFILE_NAME = "//*[contains(text(), 'Заррина')]";
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -28,24 +37,59 @@ public class LoginPage extends BasePage {
         logger.info("Ввод логина (длина: {} символов)", username.length());
         find(PHONE_OR_EMAIL_INPUT).clear();
         find(PHONE_OR_EMAIL_INPUT).sendKeys(username);
-
         logger.info("Ввод пароля");
         find(PASSWORD_INPUT).clear();
         find(PASSWORD_INPUT).sendKeys(password);
-
         logger.info("Клик по кнопке отправки формы авторизации");
         click(SUBMIT_LOGIN_BUTTON);
     }
 
-    public boolean isErrorMessageDisplayed() {
-        boolean isVisible = isElementVisible(ERROR_MESSAGE);
-        logger.info("Проверка видимости сообщения об ошибке. Результат: {}", isVisible);
-        return isVisible;
+    public void loginWithSystemProperties() {
+        String login = getRequiredSystemProperty("kari.login");
+        String password = getRequiredSystemProperty("kari.password");
+        this.loginWithCredentials(login, password);
     }
 
-    public String getErrorMessageText() {
-        String text = getText(ERROR_MESSAGE);
-        logger.info("Получен текст ошибки: '{}'", text);
-        return text;
+    public String isErrorMessageDisplayed() {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebElement errorMessage = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Неверный логин или пароль')]"))
+            );
+            String errorText = errorMessage.getText();
+            logger.info("Сообщение об ошибке найдено: {}", errorText);
+            return errorText;
+        } catch (org.openqa.selenium.TimeoutException e) {
+            logger.info("Сообщение об ошибке не появилось на странице");
+            return "";
+        }
+    }
+
+    public String checkUserProfileNameIsDisplayed() {
+        logger.info("Ожидание появления имени пользователя 'Заррина'");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebElement profileNameElement = wait.until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath(USER_PROFILE_NAME))
+        );
+        String profileText = profileNameElement.getText();
+        logger.info("Имя пользователя успешно считано: {}", profileText);
+        return profileText;
+    }
+
+    public String getAnyFormErrorText() {
+        logger.info("Ожидание появления сообщения об ошибке на форме...");
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8));
+            String errorXpath = "//*[contains(text(), 'Неверный логин или пароль')] | " + ERROR_MESSAGE + " | " + REQUIRED_FIELD_ERROR;
+            WebElement errorElement = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath(errorXpath))
+            );
+            String errorText = errorElement.getText();
+            logger.info("На форме зафиксирована ошибка: '{}'", errorText);
+            return errorText;
+        } catch (org.openqa.selenium.TimeoutException e) {
+            logger.warn("Ни одного сообщения об ошибке не появилось на странице");
+            return "";
+        }
     }
 }
