@@ -1,131 +1,63 @@
 package kari.api.login;
 
-import org.testng.annotations.Test;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+public class LoginApiNegativeTest extends LoginApiBaseTest {
 
-public class LoginApiNegativeTest {
+    @DisplayName("Логин с пустым email должен возвращать 400")
     @Test
     public void loginWithEmptyEmailShouldReturn400() {
-        given()
-                .log().all()
-                .baseUri("https://i.api.kari.com")
-                .header("accept", "application/json")
-                .header("content-type", "application/json")
-                .header("origin", "https://kari.com")
-                .header("referer", "https://kari.com/")
-                .header("cookie", "KariLocationId=770000000000; KariCountry=ru; KariClientCountryConfirmed=true; KariClientLocationConfirmed=true")
-                .body("""
-                        {
-                          "login": "",
-                          "password": "4444444"
-                        }
-                        """)
-                .when()
-                .post("/ecommerce/client/login")
-                .then()
-                .log().all()
-                .statusCode(400)
-                .body("error", equalTo("Bad Request"))
-                .body("message", equalTo("Invalid request payload input"));
-
+        logger.info("Проверяем логин с пустым email");
+        Response response = loginApiSteps.login("", VALID_PASSWORD);
+        loginApiSteps.assertBadRequestWithMessage(
+                response,
+                INVALID_REQUEST_PAYLOAD_MESSAGE
+        );
     }
 
+    @DisplayName("Логин с пустым паролем должен возвращать 400")
     @Test
     public void loginWithEmptyPasswordShouldReturn400() {
-        given()
-                .log().all()
-                .baseUri("https://i.api.kari.com")
-                .header("accept", "application/json")
-                .header("content-type", "application/json")
-                .header("origin", "https://kari.com")
-                .header("referer", "https://kari.com/")
-                .header("cookie", "KariLocationId=770000000000; KariCountry=ru; KariClientCountryConfirmed=true; KariClientLocationConfirmed=true")
-                .body("""
-                        {
-                          "login": "parpievazarrina11@gmail.com",
-                          "password": ""
-                        }
-                        """)
-                .when()
-                .post("/ecommerce/client/login")
-                .then()
-                .log().all()
-                .statusCode(400)
-                .body("error", equalTo("Bad Request"))
-                .body("message", equalTo("Invalid request payload input"));
+        logger.info("Проверяем логин с пустым паролем");
+        Response response = loginApiSteps.login(VALID_LOGIN, "");
+        loginApiSteps.assertBadRequestWithMessage(
+                response,
+                INVALID_REQUEST_PAYLOAD_MESSAGE
+        );
     }
 
-
+    @DisplayName("Логин с валидным email и неверным паролем должен возвращать 400")
     @Test
     public void loginWithEmailAndWrongPasswordShouldReturn400() {
-        given()
-                .log().all()
-                .baseUri("https://i.api.kari.com")
-                .header("accept", "application/json")
-                .header("content-type", "application/json")
-                .header("origin", "https://kari.com")
-                .header("referer", "https://kari.com/")
-                .header("cookie", "KariLocationId=770000000000; KariCountry=ru; KariClientCountryConfirmed=true; KariClientLocationConfirmed=true")
-                .body("""
-                        {
-                          "login": "parpievazarrina11@gmail.com",
-                          "password": "3333356666666"
-                        }
-                        """)
-                .when()
-                .post("/ecommerce/client/login")
-                .then()
-                .log().all()
-                .statusCode(400)
-                .body("error", equalTo("Bad Request"))
-                .body("message", equalTo("Неверный логин или пароль"));
-
+        logger.info("Проверяем логин с неверным паролем");
+        Response response = loginApiSteps.login(VALID_LOGIN, WRONG_PASSWORD);
+        loginApiSteps.assertBadRequestWithMessage(
+                response,
+                WRONG_LOGIN_OR_PASSWORD_MESSAGE
+        );
     }
 
+    @DisplayName("Логин с невалидным форматом email должен возвращать 400")
     @Test
     public void loginWithInvalidEmailFormatShouldReturn400() {
-        given()
-                .log().all()
-                .baseUri("https://i.api.kari.com")
-                .header("accept", "application/json")
-                .header("content-type", "application/json")
-                .header("origin", "https://kari.com")
-                .header("referer", "https://kari.com/")
-                .header("cookie", "KariLocationId=770000000000; KariCountry=ru; KariClientCountryConfirmed=true; KariClientLocationConfirmed=true")
-                .body("""
-                        {
-                          "login": "parpievazarrina11gmail.com",
-                          "password": "4444444"
-                        }
-                        """)
-                .when()
-                .post("/ecommerce/client/login")
-                .then()
-                .log().all()
-                .statusCode(400)
-                .body("error", equalTo("Bad Request"))
-                .body("message", equalTo("Неверный логин или пароль")); //проверяем валидацию формата email, потому что это критичная проверка
+        logger.info("Проверяем логин с невалидным форматом email");
+        Response response = loginApiSteps.login(INVALID_EMAIL, VALID_PASSWORD);
+        loginApiSteps.assertBadRequestWithMessage(
+                response,
+                WRONG_LOGIN_OR_PASSWORD_MESSAGE
+        );
     }
 
+    @DisplayName("Логин с пустым телом запроса должен возвращать 400")
     @Test
     public void loginWithEmptyBodyShouldReturn400AndNotEmptyResponseBody() {
-        given()
-                .log().all()
-                .baseUri("https://i.api.kari.com")
-                .header("accept", "application/json")
-                .header("content-type", "application/json")
-                .header("origin", "https://kari.com")
-                .header("referer", "https://kari.com/")
-                .header("cookie", "KariLocationId=770000000000; KariCountry=ru; KariClientCountryConfirmed=true; KariClientLocationConfirmed=true")
-                .when()
-                .post("/ecommerce/client/login")
-                .then()
-                .log().all()
-                .statusCode(400)
-                .body(not(emptyString())) //проверяем, что тело не пустое
-                .body("error", equalTo("Bad Request"))
-                .body("message", equalTo("Invalid request payload input"));
+        logger.info("Проверяем логин с пустым телом запроса");
+        Response response = loginApiSteps.loginWithEmptyBody();
+        loginApiSteps.assertBadRequestWithNotEmptyBody(
+                response,
+                INVALID_REQUEST_PAYLOAD_MESSAGE
+        );
     }
 }
