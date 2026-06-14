@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MainPage extends BasePage {
 
-    private static final String MENU_ITEMS_LOCATOR = "//ul[contains(@class, 'e6gdblz1')]/li/a";
+    private static final String MENU_ITEMS_LOCATOR = "//nav//ul/li/a";
     private final String FOOTER_COPIRIGHT = "//*[contains(text(), '© kari. Все права защищены. 2011-')]";
     private final String LOGO_XPATH = "//a[@aria-label='Главная страница']";
     private final String CART_ICON_XPATH = "//*[contains(@href, '/cart') or contains(@class, 'basket') or contains(@class, 'cart')]";
