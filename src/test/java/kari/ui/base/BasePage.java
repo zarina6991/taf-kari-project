@@ -41,7 +41,7 @@ public class BasePage {
     }
 
     public static String getRequiredSystemProperty(String key) {
-        String value = System.getProperty(key);
+        String value = System.getenv(key);
 
         if (value == null || value.trim().isEmpty()) {
             throw new IllegalStateException("Критическая ошибка: Системное свойство '" + key + "' не задано!");

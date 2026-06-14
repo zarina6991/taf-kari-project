@@ -1,30 +1,32 @@
 package kari.ui.tests;
 
 import kari.ui.pages.LoginPage;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Тестирование функционала авторизации на сайте Kari")
-public class LoginTest extends BaseTest {
+public class
+
+LoginTest extends BaseTest {
 
     private LoginPage loginPage;
+    private Faker faker;
 
     @BeforeEach
     public void initPage() {
         logger.info("Инициализация объекта LoginPage перед стартом теста");
         loginPage = new LoginPage(driver);
-        loginPage.open(BASE_UI_URL);
+        faker = new Faker();
+        driver.get(BASE_UI_URL + "auth/");
     }
 
     @Test
     @DisplayName("Позитивный сценарий: Успешный вход в личный кабинет")
     public void testPositiveLoginWithValidCredentials() {
-        logger.info("Начало выполнения теста: Позитивный сценарий авторизации");
-        loginPage.openLoginPage();
         loginPage.loginWithSystemProperties();
-        logger.info("Выполнение проверок перенаправления (Assertions)");
         Assertions.assertTrue(loginPage.checkUserProfileNameIsDisplayed().contains("Заррина"),
                 "Имя авторизованного пользователя 'Заррина' не найдено на странице!");
         Assertions.assertEquals("", loginPage.isErrorMessageDisplayed(),
@@ -35,10 +37,7 @@ public class LoginTest extends BaseTest {
     @Test
     @DisplayName("Негативный сценарий: Авторизация с неверными учетными данными")
     public void testNegativeLoginWithInvalidCredentials() {
-        logger.info("Начало выполнения теста: Негативный сценарий авторизации");
-        loginPage.openLoginPage();
         loginPage.loginWithCredentials("+79991112233", "WrongPassword123");
-        logger.info("Выполнение проверок для негативного сценария (Assertions)");
         String actualErrorText = loginPage.isErrorMessageDisplayed();
         Assertions.assertFalse(actualErrorText.isEmpty(),
                 "Критическая ошибка: Сообщение об ошибке валидации не появилось на экране!");
@@ -48,25 +47,46 @@ public class LoginTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Негативный сценарий: Попытка входа с пустыми полями")
-    public void testLoginWithEmptyFields() {
-        logger.info("Начало теста: Авторизация с пустыми полями");
-        driver.get(BASE_UI_URL + "auth/");
-        loginPage.loginWithCredentials("", "");
-        logger.info("Выполнение проверок локальной валидации");
+    @DisplayName("Негативный сценарий: Ввод пробелов вместо логина и пароля")
+    public void testLoginWithSpaces() {
+        loginPage.loginWithCredentials("   ", "   ");
         Assertions.assertFalse(loginPage.getAnyFormErrorText().isEmpty(),
-                "Ошибка: При отправке пустой формы не появилось уведомление или подсветка полей!");
-        logger.info("Тест успешно завершен. Локальная валидация пустых полей работает.");
+                "Ошибка: Система посчитала пробелы за валидные данные и не вывела ошибку!");
+        logger.info("Тест успешно завершен. Пробелы успешно отсекаются валидацией.");
     }
 
     @Test
     @DisplayName("Негативный сценарий: Ввод некорректного формата телефона")
     public void testLoginWithInvalidPhoneFormat() {
-        logger.info("Начало теста: Ввод некорректного формата телефона");
-        driver.get(BASE_UI_URL + "auth/");
         loginPage.loginWithCredentials("123", "AnyPassword123");
         logger.info("Проверка реакции системы на неверный формат ввода");
         Assertions.assertFalse(loginPage.getAnyFormErrorText().isEmpty(),
                 "Ошибка: Система не отреагировала на невалидный формат номера телефона!");
+    }
+
+    @Test
+    @DisplayName("Позитивный сценарий: Проверка валидации формы со случайным E-mail через Faker")
+    public void testPositiveLoginWithFakerEmail() {
+        String randomEmail = faker.internet().emailAddress();
+        logger.info("Генератор Faker создал email: " + randomEmail);
+        loginPage.loginWithCredentials(randomEmail, "ValidPassword123!");
+        String errorText = loginPage.getAnyFormErrorText();
+        Assertions.assertFalse(errorText.contains("Введите свой телефон или e-mail"),
+                "Локальная валидация ошибочно посчитала валидный Faker email некорректным!");
+        Assertions.assertFalse(errorText.contains("Обязательное поле"),
+                "Локальная валидация ошибочно вывела ошибку 'Обязательное поле' для заполненного пароля!");
+        logger.info("Тест успешно завершен: сгенерированный email прошел проверку формата.");
+    }
+
+    @Test
+    @DisplayName("Валидация формы: Проверка локальных ошибок при пустых полях")
+    public void testFormLocalValidationWithEmptyFields() {
+        loginPage.loginWithCredentials("", "");
+        String errorText = loginPage.getAnyFormErrorText();
+        Assertions.assertTrue(
+                errorText.contains("Введите свой телефон или e-mail") || errorText.contains("Обязательное поле"),
+                "Локальная валидация пустых полей не сработала! Текст на форме: " + errorText
+        );
+        logger.info("Тест успешно завершен: локальная валидация пустых полей подтверждена.");
     }
 }
