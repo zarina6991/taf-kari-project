@@ -16,7 +16,7 @@ public class RecoveryPage extends BasePage {
 
     private static final String PHONE_INPUT_XPATH = "//input[@name='phone']";
     private static final String GET_CODE_BUTTON_XPATH = "//button[contains(., 'Получить код')]";
-    private static final String CLOSE_CAPTCHA_BUTTON_XPATH = "//h3[contains(text(), 'вы точно не робот')]/following-sibling::button']";
+    private static final String CLOSE_CAPTCHA_BUTTON_XPATH = "//h3[contains(text(), 'вы точно не робот')]/following-sibling::button";
 
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
