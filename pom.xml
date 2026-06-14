@@ -102,7 +102,11 @@
                 <configuration>
                     <useModulePath>false</useModulePath>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <environmentVariables>
+                        <JENKINS_URL>${env.JENKINS_URL}</JENKINS_URL>
+                    </environmentVariables>
                 </configuration>
+
                 <dependencies>
                     <dependency>
                         <groupId>org.aspectj</groupId>
