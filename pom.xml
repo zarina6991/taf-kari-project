@@ -15,7 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <junit.version>5.10.2</junit.version>
-        <selenium.version>4.23.0</selenium.version>
+        <selenium.version>4.25.0</selenium.version>
         <rest.assured.version>5.4.0</rest.assured.version>
         <log4j.version>2.23.1</log4j.version>
         <allure.version>2.25.0</allure.version>
@@ -88,7 +88,6 @@
             <artifactId>datafaker</artifactId>
             <version>2.2.2</version>
         </dependency>
-
 
     </dependencies>
 
