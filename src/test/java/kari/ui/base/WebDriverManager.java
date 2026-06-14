@@ -16,6 +16,7 @@ public class WebDriverManager {
             ChromeOptions options = new ChromeOptions();
 
             if (System.getenv("JENKINS_URL") != null) {
+                System.setProperty("webdriver.chrome.autodownload", "false");
                 options.addArguments("--headless=new");
                 options.addArguments("--window-size=1920,1080");
                 options.addArguments("--disable-gpu");

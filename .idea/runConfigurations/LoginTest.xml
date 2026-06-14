@@ -1,0 +1,28 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="LoginTest" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <module name="taf-kari-project" />
+    <selectedOptions>
+      <option name="vmParameters" />
+    </selectedOptions>
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="kari.ui.tests.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="corretto-21" />
+    <option name="PACKAGE_NAME" value="kari.ui.tests" />
+    <option name="MAIN_CLASS_NAME" value="kari.ui.tests.LoginTest" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="VM_PARAMETERS" />
+    <envs>
+      <env name="kari.login" value="zarina6991@gmail.com" />
+      <env name="kari.password" value="As_babaeva67_" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
