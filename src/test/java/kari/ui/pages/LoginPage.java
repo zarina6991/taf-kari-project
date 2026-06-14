@@ -20,17 +20,18 @@ public class LoginPage extends BasePage {
     private static final String PHONE_OR_EMAIL_INPUT = "//input[@placeholder='Телефон/E-mail']";
     private static final String PASSWORD_INPUT = "//input[@type='password' or contains(@placeholder, 'Пароль')]";
     private static final String SUBMIT_LOGIN_BUTTON = "//button[@type='submit'][span[text()='Войти']]";
-    private static final String ERROR_MESSAGE = "//p[contains(text(), 'Некорректный номер телефона')]";
-    public static final String REQUIRED_FIELD_ERROR = "//p[@color='error' and text()='Обязательное поле']";
+    private static final String ERROR_MESSAGE_FOR_PHONE_NUMBER = "//p[contains(text(), 'Некорректный номер телефона')]";
     public static final String USER_PROFILE_NAME = "//*[contains(text(), 'Заррина')]";
+    private static final String ERROR_MESSAGE = "//p[@color='error' and contains(text(), 'Введите свой телефон или e-mail')]";
+    private static final String REQUIRED_FIELD_ERROR = "//*[contains(text(), 'Обязательное поле')]";
 
     public LoginPage(WebDriver driver) {
         super(driver);
     }
 
     public void openLoginPage() {
-        logger.info("Открытие страницы авторизации по URL: {}", BASE_UI_URL+ "auth/");
-        open(BASE_UI_URL+ "auth/");
+        logger.info("Открытие страницы авторизации по URL: {}", BASE_UI_URL + "auth/");
+        open(BASE_UI_URL + "auth/");
     }
 
     public void loginWithCredentials(String username, String password) {
@@ -80,9 +81,14 @@ public class LoginPage extends BasePage {
         logger.info("Ожидание появления сообщения об ошибке на форме...");
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8));
-            String errorXpath = "//*[contains(text(), 'Неверный логин или пароль')] | " + ERROR_MESSAGE + " | " + REQUIRED_FIELD_ERROR;
+            String xpath = "//*[contains(text(), 'Неверный логин или пароль')] | "
+                    + ERROR_MESSAGE
+                    + " | "
+                    + REQUIRED_FIELD_ERROR
+                    + " | "
+                    + ERROR_MESSAGE_FOR_PHONE_NUMBER;
             WebElement errorElement = wait.until(
-                    ExpectedConditions.visibilityOfElementLocated(By.xpath(errorXpath))
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))
             );
             String errorText = errorElement.getText();
             logger.info("На форме зафиксирована ошибка: '{}'", errorText);
