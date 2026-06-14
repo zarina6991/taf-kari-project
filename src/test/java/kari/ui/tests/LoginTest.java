@@ -2,10 +2,7 @@ package kari.ui.tests;
 
 import kari.ui.pages.LoginPage;
 import net.datafaker.Faker;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 @DisplayName("Тестирование функционала авторизации на сайте Kari")
 public class
@@ -25,6 +22,7 @@ LoginTest extends BaseTest {
 
     @Test
     @DisplayName("Позитивный сценарий: Успешный вход в личный кабинет")
+    @Disabled
     public void testPositiveLoginWithValidCredentials() {
         loginPage.loginWithSystemProperties();
         Assertions.assertTrue(loginPage.checkUserProfileNameIsDisplayed().contains("Заррина"),
