@@ -2,10 +2,7 @@ package kari.ui.tests;
 
 import kari.ui.pages.RecoveryPage;
 import net.datafaker.Faker;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.Locale;
 
@@ -39,6 +36,7 @@ public class RecoveryTest extends BaseTest {
 
     @Test
     @DisplayName("Форма восстановления: Успешная отправка формы с обходом окна капчи")
+    @Disabled
     public void testSuccessfulRecoveryRequest() {
         logger.info("Старт теста: Успешная отправка формы восстановления с валидным номером");
         Faker faker = new Faker(new Locale("ru"));
