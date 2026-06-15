@@ -106,22 +106,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Автоматическое определение пути к библиотекам для javaagent -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.1</version>
-                <executions>
-                    <execution>
-                        <id>get-aspectjweaver</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>properties</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- Запуск обычных тестов JUnit 5 через Maven -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -130,7 +114,7 @@
                 <configuration>
                     <useModulePath>false</useModulePath>
                     <argLine>
-                        -javaagent:"${org.aspectj:aspectjweaver:jar}"
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                         -Dfile.encoding=UTF-8
                     </argLine>
                     <environmentVariables>
