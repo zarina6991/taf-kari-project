@@ -24,6 +24,8 @@ public class LoginPage extends BasePage {
     public static final String USER_PROFILE_NAME = "//*[contains(text(), 'Заррина')]";
     private static final String ERROR_MESSAGE = "//p[@color='error' and contains(text(), 'Введите свой телефон или e-mail')]";
     private static final String REQUIRED_FIELD_ERROR = "//*[contains(text(), 'Обязательное поле')]";
+    private static final String ERROR_POPUP_MESSAGE = "//li[contains(@class, 'e2g6g1t0')]//p";
+
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -55,8 +57,7 @@ public class LoginPage extends BasePage {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             WebElement errorMessage = wait.until(
-                    ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Неверный логин или пароль')]"))
-            );
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath(ERROR_POPUP_MESSAGE)));
             String errorText = errorMessage.getText();
             logger.info("Сообщение об ошибке найдено: {}", errorText);
             return errorText;
