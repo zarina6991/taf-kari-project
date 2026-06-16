@@ -36,7 +36,6 @@ public class RecoveryTest extends BaseTest {
 
     @Test
     @DisplayName("Форма восстановления: Успешная отправка формы с обходом окна капчи")
-
     public void testSuccessfulRecoveryRequest() {
         logger.info("Старт теста: Успешная отправка формы восстановления с валидным номером");
         Faker faker = new Faker(new Locale("ru"));

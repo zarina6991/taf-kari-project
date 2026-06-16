@@ -22,7 +22,6 @@ LoginTest extends BaseTest {
 
     @Test
     @DisplayName("Позитивный сценарий: Успешный вход в личный кабинет")
-    @Disabled
     public void testPositiveLoginWithValidCredentials() {
         loginPage.loginWithSystemProperties();
         Assertions.assertTrue(loginPage.checkUserProfileNameIsDisplayed().contains("Заррина"),
