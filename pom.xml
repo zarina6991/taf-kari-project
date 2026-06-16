@@ -12,7 +12,13 @@
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+
+        <!-- Настройки кодировки для Maven сборщика и отчетов -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Системные переменные для принудительного UTF-8 в логах Java/Log4j -->
+        <argLine>-Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8</argLine>
 
         <junit.version>5.10.2</junit.version>
         <selenium.version>4.25.0</selenium.version>
@@ -101,6 +107,8 @@
                     <useModulePath>false</useModulePath>
                     <argLine>
                         -Dfile.encoding=UTF-8
+                        -Dsun.stdout.encoding=UTF-8
+                        -Dsun.stderr.encoding=UTF-8
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
                 </configuration>
