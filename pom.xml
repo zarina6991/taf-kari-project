@@ -20,7 +20,7 @@
         <log4j.version>2.23.1</log4j.version>
         <allure.version>2.25.0</allure.version>
         <aspectj.version>1.9.22.1</aspectj.version>
-        <maven.surefire.version>3.5.0</maven.surefire.version>
+        <maven.surefire.version>3.2.5</maven.surefire.version>
     </properties>
 
     <dependencyManagement>
@@ -36,7 +36,6 @@
     </dependencyManagement>
 
     <dependencies>
-
         <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -47,10 +46,10 @@
 
         <!-- Selenium -->
         <dependency>
-            <scope>test</scope>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Rest Assured -->
@@ -68,7 +67,6 @@
             <version>${log4j.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -88,25 +86,13 @@
             <groupId>net.datafaker</groupId>
             <artifactId>datafaker</artifactId>
             <version>2.2.2</version>
+            <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
         <plugins>
-
-            <!-- Компилятор Java -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-            </plugin>
-
-            <!-- Запуск обычных тестов JUnit 5 через Maven -->
+            <!-- Запуск тестов через Maven -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -114,17 +100,9 @@
                 <configuration>
                     <useModulePath>false</useModulePath>
                     <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                         -Dfile.encoding=UTF-8
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
-                    <environmentVariables>
-                        <JENKINS_URL>${env.JENKINS_URL}</JENKINS_URL>
-                    </environmentVariables>
-                    <includes>
-                        <!-- Настройка запуска стандартных классов тестов JUnit -->
-                        <include>**/*Test.java</include>
-                        <include>**/Test*.java</include>
-                    </includes>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -140,9 +118,10 @@
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
                 <version>2.12.0</version>
+                <configuration>
+                    <reportVersion>${allure.version}</reportVersion>
+                </configuration>
             </plugin>
-
         </plugins>
     </build>
-
 </project>
