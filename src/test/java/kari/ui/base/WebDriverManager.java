@@ -1,5 +1,6 @@
 package kari.ui.base;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -23,6 +24,7 @@ public class WebDriverManager {
                 options.addArguments("--no-sandbox");
                 options.addArguments("--disable-dev-shm-usage");
                 driver = new ChromeDriver(options);
+                driver.manage().window().setSize(new Dimension(1920, 1080));
             } else {
                 driver = new ChromeDriver();
                 driver.manage().window().maximize();

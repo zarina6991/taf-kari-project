@@ -1,5 +1,6 @@
 package kari.ui.tests;
 
+import kari.ui.base.WebDriverManager;
 import kari.ui.pages.LoginPage;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.*;
@@ -24,12 +25,15 @@ LoginTest extends BaseTest {
     @DisplayName("Позитивный сценарий: Успешный вход в личный кабинет")
     public void testPositiveLoginWithValidCredentials() {
         loginPage.loginWithSystemProperties();
+        org.openqa.selenium.support.ui.WebDriverWait wait = new org.openqa.selenium.support.ui.WebDriverWait(WebDriverManager.getDriver(), java.time.Duration.ofSeconds(10));
+        wait.until(org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated(org.openqa.selenium.By.xpath("//*[contains(text(), 'Заррина')]")));
         Assertions.assertTrue(loginPage.checkUserProfileNameIsDisplayed().contains("Заррина"),
                 "Имя авторизованного пользователя 'Заррина' не найдено на странице!");
         Assertions.assertEquals("", loginPage.isErrorMessageDisplayed(),
-                "В позитивном сценарии отобразилось сообщение об ошибке авторизации!");
+                "Отобразилось сообщение об ошибке авторизации!");
         logger.info("Тест успешно завершен. Пользователь Заррина авторизован.");
     }
+
 
     @Test
     @DisplayName("Негативный сценарий: Авторизация с неверными учетными данными")
