@@ -21,9 +21,7 @@ public class MainTest {
     @BeforeEach
     public void setUp() {
         logger.info("Инициализация драйвера и запуск браузера Chrome");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver = kari.ui.base.WebDriverManager.getDriver();
         mainPage = new MainPage(driver);
         logger.info("Открытие главной страницы сайта: {}", BASE_UI_URL);
         mainPage.open(BASE_UI_URL);
@@ -74,7 +72,7 @@ public class MainTest {
     public void tearDown() {
         if (driver != null) {
             logger.info("Завершение теста, закрытие сессии браузера");
-            driver.quit();
+            kari.ui.base.WebDriverManager.quitDriver();
         }
     }
 }
