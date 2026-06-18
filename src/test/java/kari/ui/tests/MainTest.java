@@ -67,12 +67,4 @@ public class MainTest {
         Assertions.assertFalse(actualItems.isEmpty(), "Список пунктов меню пуст!");
         Assertions.assertEquals(expectedItems, actualItems, "Состав или порядок меню не совпадает!");
     }
-
-    @AfterEach
-    public void tearDown() {
-        if (driver != null) {
-            logger.info("Завершение теста, закрытие сессии браузера");
-            kari.ui.base.WebDriverManager.quitDriver();
-        }
-    }
 }
