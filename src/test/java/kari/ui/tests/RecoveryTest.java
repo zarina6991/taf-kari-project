@@ -17,6 +17,7 @@ public class RecoveryTest extends BaseTest {
         recoveryPage.openRecoveryPage();
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Отображение элементов: Проверка доступности поля ввода номера телефона")
     public void testRecoveryPageElementsDisplay() {
@@ -25,6 +26,7 @@ public class RecoveryTest extends BaseTest {
                 "Поле ввода номера телефона не найдено или скрыто на странице!");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Валидация: Проверка подсветки поля при ошибке")
     public void testInvalidPhoneNumberErrorText() {
@@ -34,6 +36,7 @@ public class RecoveryTest extends BaseTest {
                 "Поле ввода номера телефона не подсветилось красным!");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Форма восстановления: Успешная отправка формы с обходом окна капчи")
     public void testSuccessfulRecoveryRequest() {

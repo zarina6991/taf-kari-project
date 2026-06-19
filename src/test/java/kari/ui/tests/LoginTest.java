@@ -21,6 +21,7 @@ LoginTest extends BaseTest {
         driver.get(BASE_UI_URL + "auth/");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Позитивный сценарий: Успешный вход в личный кабинет")
     public void testPositiveLoginWithValidCredentials() {
@@ -35,6 +36,7 @@ LoginTest extends BaseTest {
     }
 
 
+    @Tag("ui")
     @Test
     @DisplayName("Негативный сценарий: Авторизация с неверными учетными данными")
     public void testNegativeLoginWithInvalidCredentials() {
@@ -47,6 +49,7 @@ LoginTest extends BaseTest {
         logger.info("Тест успешно завершен. Ошибка валидации обработана корректно.");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Негативный сценарий: Ввод пробелов вместо логина и пароля")
     public void testLoginWithSpaces() {
@@ -56,6 +59,7 @@ LoginTest extends BaseTest {
         logger.info("Тест успешно завершен. Пробелы успешно отсекаются валидацией.");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Негативный сценарий: Ввод некорректного формата телефона")
     public void testLoginWithInvalidPhoneFormat() {
@@ -65,6 +69,7 @@ LoginTest extends BaseTest {
                 "Ошибка: Система не отреагировала на невалидный формат номера телефона!");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Позитивный сценарий: Проверка валидации формы со случайным E-mail через Faker")
     public void testPositiveLoginWithFakerEmail() {
@@ -79,6 +84,7 @@ LoginTest extends BaseTest {
         logger.info("Тест успешно завершен: сгенерированный email прошел проверку формата.");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Валидация формы: Проверка локальных ошибок при пустых полях")
     public void testFormLocalValidationWithEmptyFields() {

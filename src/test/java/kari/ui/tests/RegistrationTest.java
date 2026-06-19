@@ -2,10 +2,7 @@ package kari.ui.tests;
 
 import net.datafaker.Faker;
 import kari.ui.pages.RegistrationPage;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 public class RegistrationTest extends BaseTest {
 
@@ -20,6 +17,7 @@ public class RegistrationTest extends BaseTest {
         driver.get(BASE_UI_URL + "auth/reg/?redirection=");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Негативный сценарий: Ввод неполного номера телефона")
     public void testRegistrationWithIncompletePhone() {
@@ -32,6 +30,7 @@ public class RegistrationTest extends BaseTest {
         logger.info("Тест успешно завершен.");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Негативный сценарий: Попытка отправки пустой формы")
     public void testRegistrationWithEmptyPhone() {
@@ -44,6 +43,8 @@ public class RegistrationTest extends BaseTest {
         logger.info("Тест успешно завершен: пустая форма заблокирована. Текст ошибки: " + errorText);
     }
 
+    @Tag("smoke")
+    @Tag("ui")
     @Test
     @DisplayName("Позитивный сценарий: Отправка валидного случайного номера через Faker")
     public void testPositiveRegistrationWithValidPhone() {
