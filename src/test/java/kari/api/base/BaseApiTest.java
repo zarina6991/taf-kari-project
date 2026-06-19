@@ -19,6 +19,23 @@ public class BaseApiTest {
 
     protected RequestSpecification requestSpec;
 
+    protected void assertBadRequestWithMessage(io.restassured.response.Response response, String expectedMessage) {
+        response.then()
+                .log().ifValidationFails()
+                .statusCode(400)
+                .body("error", org.hamcrest.Matchers.equalTo("Bad Request"))
+                .body("message", org.hamcrest.Matchers.equalTo(expectedMessage));
+    }
+
+    protected void assertBadRequestWithNotEmptyBody(io.restassured.response.Response response, String expectedMessage) {
+        response.then()
+                .log().ifValidationFails()
+                .statusCode(400)
+                .body(org.hamcrest.Matchers.not(org.hamcrest.Matchers.emptyString()))
+                .body("error", org.hamcrest.Matchers.equalTo("Bad Request"))
+                .body("message", org.hamcrest.Matchers.equalTo(expectedMessage));
+    }
+
     @BeforeEach
     public void setUpApi() {
         logger.info("Старт теста");
@@ -40,16 +57,15 @@ public class BaseApiTest {
                 .build();
     }
 
-    @AfterEach
-    public void tearDownApi() {
-        logger.info("Тест завершен");
-        logger.info("----------------------------------------");
-    }
-
     private String getDefaultCookie() {
         return "KariLocationId=770000000000; " +
                 "KariCountry=ru; " +
                 "KariClientCountryConfirmed=true; " +
                 "KariClientLocationConfirmed=true";
+    }
+
+    @AfterEach
+    public void tearDownApi() {
+        logger.info("Тест завершен");
     }
 }
