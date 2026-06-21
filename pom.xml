@@ -27,6 +27,8 @@
         <allure.version>2.25.0</allure.version>
         <aspectj.version>1.9.22.1</aspectj.version>
         <maven.surefire.version>3.2.5</maven.surefire.version>
+        <!-- Версия Cucumber, полностью совместимая с вашей версией JUnit 5.10.2 -->
+        <cucumber.version>7.15.0</cucumber.version>
     </properties>
 
     <dependencyManagement>
@@ -92,6 +94,26 @@
             <groupId>net.datafaker</groupId>
             <artifactId>datafaker</artifactId>
             <version>2.2.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--  CUCUMBER BDD === -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-cucumber7-jvm</artifactId>
+            <version>${allure.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
