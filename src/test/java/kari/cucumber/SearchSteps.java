@@ -47,12 +47,16 @@ public class SearchSteps {
 
     @io.cucumber.java.After
     public void afterScenario(io.cucumber.java.Scenario scenario) {
-        if (!scenario.isFailed()) {
-            System.out.println("=================================================");
-            System.out.println("' Сценарий '" + scenario.getName() + "' успешно пройден!");
-            System.out.println("=================================================");
-        } else {
-            System.out.println("Сценарий '" + scenario.getName() + "' упал.");
+        try {
+            if (!scenario.isFailed()) {
+                System.out.println("=================================================");
+                System.out.println("' Сценарий '" + scenario.getName() + "' успешно пройден!");
+                System.out.println("=================================================");
+            } else {
+                System.out.println("Сценарий '" + scenario.getName() + "' упал.");
+            }
+        } finally {
+            kari.ui.base.WebDriverManager.quitDriver();
         }
     }
 }
