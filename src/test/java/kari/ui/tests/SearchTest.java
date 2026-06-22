@@ -14,6 +14,8 @@ public class SearchTest extends BaseTest {
         searchPage.open(BASE_UI_URL);
     }
 
+    @Tag("smoke")
+    @Tag("ui")
     @Test
     @DisplayName("Успешный поиск существующего товара")
     public void testSearchExistingProduct() {
@@ -24,6 +26,7 @@ public class SearchTest extends BaseTest {
                 "Текст найденного товара пуст или не содержит цену!");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Появление подсказок при вводе товара в поиск")
     public void testSearchSuggestAppearsWithWord() {
@@ -33,6 +36,7 @@ public class SearchTest extends BaseTest {
         searchPage.checkSearchSuggestIsDisplayed(searchQuery);
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Поиск несуществующего товара")
     public void testSearchNonExistentProduct() {
