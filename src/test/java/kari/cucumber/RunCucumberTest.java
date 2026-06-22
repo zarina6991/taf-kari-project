@@ -1,17 +1,15 @@
 package kari.cucumber;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-import org.junit.runner.RunWith;
+import io.cucumber.junit.platform.engine.Constants;
+import org.junit.platform.suite.api.ConfigurationParameter;
+import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.Suite;
 
-@RunWith(Cucumber.class)
-@CucumberOptions(
-        features = "src/test/resources/features",
-        glue = {"kari.cucumber"},
-        plugin = {
-                "pretty",
-                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
-        }
+@Suite
+@SelectClasspathResource("features") // Ищет .feature файлы в src/test/resources/features
+@ConfigurationParameter(
+        key = Constants.PLUGIN_PROPERTY_NAME,
+        value = "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm, pretty" // Подключает Allure-отчеты
 )
 public class RunCucumberTest {
 }

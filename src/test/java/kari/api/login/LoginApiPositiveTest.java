@@ -13,13 +13,9 @@ public class LoginApiPositiveTest extends LoginApiBaseTest {
     public void loginWithValidCredentialsShouldReturnSuccessResponse() {
         String login = getRequiredSystemProperty("kari.login");
         String password = getRequiredSystemProperty("kari.password");
-
         logger.info("Отправляем запрос на авторизацию пользователя: {}", login);
-
         Response response = loginApiSteps.login(login, password);
-
         loginApiSteps.assertSuccessfulLoginResponse(response);
-
         logger.info("Авторизация успешно выполнена");
     }
 }

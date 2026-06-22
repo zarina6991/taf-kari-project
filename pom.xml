@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+<modelVersion>4.0.0</modelVersion>
 
     <groupId>kari</groupId>
     <artifactId>taf-kari-project</artifactId>
@@ -17,17 +17,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <!-- Системные переменные для принудительного UTF-8 в логах Java/Log4j -->
+        <!-- Системные переменные для принудительного UTF-8 в логах Java/Log4j  -->
         <argLine>-Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8</argLine>
 
         <junit.version>5.10.2</junit.version>
+        <junit.platform.version>1.10.2</junit.platform.version>
         <selenium.version>4.25.0</selenium.version>
         <rest.assured.version>5.4.0</rest.assured.version>
         <log4j.version>2.23.1</log4j.version>
         <allure.version>2.25.0</allure.version>
         <aspectj.version>1.9.22.1</aspectj.version>
         <maven.surefire.version>3.2.5</maven.surefire.version>
-        <!-- Версия Cucumber, полностью совместимая с вашей версией JUnit 5.10.2 -->
         <cucumber.version>7.15.0</cucumber.version>
     </properties>
 
@@ -49,6 +49,14 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Поддержка аннотации @Suite для JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>${junit.platform.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -97,7 +105,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!--  CUCUMBER BDD === -->
+        <!-- CUCUMBER BDD -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
@@ -106,7 +114,7 @@
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
@@ -120,17 +128,16 @@
 
     <build>
         <plugins>
-            <!-- Запуск тестов через Maven -->
+            <!-- Запуск тестов через Maven Surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
+                    <!-- Кодировки и путь к агенту Allure -->
                     <argLine>
-                        -Dfile.encoding=UTF-8
-                        -Dsun.stdout.encoding=UTF-8
-                        -Dsun.stderr.encoding=UTF-8
+                        @{argLine}
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
                 </configuration>
