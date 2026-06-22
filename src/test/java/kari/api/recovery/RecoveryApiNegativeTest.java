@@ -4,6 +4,7 @@ import io.restassured.response.Response;
 import kari.api.base.BaseApiTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 public class RecoveryApiNegativeTest extends BaseApiTest {
@@ -15,6 +16,7 @@ public class RecoveryApiNegativeTest extends BaseApiTest {
         recoveryApiSteps = new RecoveryApiSteps(requestSpec);
     }
 
+    @Tag("api")
     @DisplayName("Восстановление без авторизации должно возвращать 401")
     @Test
     public void recoveryWithoutAuthenticationShouldReturn401() {
