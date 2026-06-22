@@ -5,6 +5,7 @@ import kari.api.ApiUtils;
 import kari.api.base.BaseApiTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.emptyString;
@@ -24,6 +25,8 @@ public class RegistrationApiTest extends BaseApiTest {
         registrationApiSteps = new RegistrationApiSteps(requestSpec);
     }
 
+    @Tag("smoke")
+    @Tag("api")
     @DisplayName("Отправка кода регистрации с валидным телефоном должна возвращать 200 или 400 лимит")
     @Test
     public void sendCodeWithValidPhoneShouldReturnSuccess() {
@@ -34,6 +37,7 @@ public class RegistrationApiTest extends BaseApiTest {
         logger.info("Запрос на отправку кода выполнен успешно");
     }
 
+    @Tag("api")
     @DisplayName("Отправка кода регистрации с пустым телефоном должна возвращать 400")
     @Test
     public void sendCodeWithEmptyPhoneShouldReturn400() {
@@ -43,6 +47,7 @@ public class RegistrationApiTest extends BaseApiTest {
         assertBadRequestWithMessage(response, INVALID_REQUEST_PAYLOAD_MESSAGE);
     }
 
+    @Tag("api")
     @DisplayName("Отправка кода регистрации со слишком коротким номером должна возвращать 400")
     @Test
     public void sendCodeWithTooShortPhoneShouldReturn400() {
@@ -53,6 +58,7 @@ public class RegistrationApiTest extends BaseApiTest {
         assertBadRequestWithMessage(response, INVALID_REQUEST_PAYLOAD_MESSAGE);
     }
 
+    @Tag("api")
     @DisplayName("Отправка кода регистрации с пустым телом запроса должна возвращать 400")
     @Test
     public void sendCodeWithEmptyBodyShouldReturn400() {
@@ -62,6 +68,7 @@ public class RegistrationApiTest extends BaseApiTest {
         assertBadRequestWithNotEmptyBody(response, INVALID_REQUEST_PAYLOAD_MESSAGE);
     }
 
+    @Tag("api")
     @DisplayName("Ввод кода подтверждения без открытой сессии должен возвращать ошибку payload")
     @Test
     public void confirmRegistrationWithWrongCodeShouldReturnError() {

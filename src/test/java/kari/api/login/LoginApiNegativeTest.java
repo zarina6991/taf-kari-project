@@ -2,10 +2,12 @@ package kari.api.login;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;;
 
 public class LoginApiNegativeTest extends LoginApiBaseTest {
 
+    @Tag("api")
     @DisplayName("Логин с пустым email должен возвращать 400")
     @Test
     public void loginWithEmptyEmailShouldReturn400() {
@@ -17,6 +19,7 @@ public class LoginApiNegativeTest extends LoginApiBaseTest {
         );
     }
 
+    @Tag("api")
     @DisplayName("Логин с пустым паролем должен возвращать 400")
     @Test
     public void loginWithEmptyPasswordShouldReturn400() {
@@ -28,6 +31,7 @@ public class LoginApiNegativeTest extends LoginApiBaseTest {
         );
     }
 
+    @Tag("api")
     @DisplayName("Логин с валидным email и неверным паролем должен возвращать 400")
     @Test
     public void loginWithEmailAndWrongPasswordShouldReturn400() {
@@ -39,6 +43,7 @@ public class LoginApiNegativeTest extends LoginApiBaseTest {
         );
     }
 
+    @Tag("api")
     @DisplayName("Логин с невалидным форматом email должен возвращать 400")
     @Test
     public void loginWithInvalidEmailFormatShouldReturn400() {
@@ -50,6 +55,7 @@ public class LoginApiNegativeTest extends LoginApiBaseTest {
         );
     }
 
+    @Tag("api")
     @DisplayName("Логин с пустым телом запроса должен возвращать 400")
     @Test
     public void loginWithEmptyBodyShouldReturn400AndNotEmptyResponseBody() {

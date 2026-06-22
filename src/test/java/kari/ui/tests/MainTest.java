@@ -27,6 +27,8 @@ public class MainTest {
         mainPage.open(BASE_UI_URL);
     }
 
+    @Tag("smoke")
+    @Tag("ui")
     @Test
     @DisplayName("Проверка успешного открытия главной страницы")
     void testMainPageOpening() {
@@ -39,6 +41,7 @@ public class MainTest {
                 "Главная страница не открылась: футер 'Все права защищены' не отображается");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Клик по логотипу бренда возвращает на главную страницу")
     void testClickLogoReturnsToMainPage() {
@@ -48,6 +51,7 @@ public class MainTest {
                 "Клик по логотипу не вернул пользователя на главную страницу!");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Переход в корзину через шапку главной страницы")
     void testNavigateToCartFromHeader() {
@@ -58,6 +62,7 @@ public class MainTest {
         Assertions.assertTrue(isCartUrl, "Переход в корзину не произошел!");
     }
 
+    @Tag("ui")
     @Test
     @DisplayName("Проверка отображения и состава пунктов главного меню")
     void testMainPageMenuItems() {
