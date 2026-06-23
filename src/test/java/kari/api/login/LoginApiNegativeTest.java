@@ -15,8 +15,7 @@ public class LoginApiNegativeTest extends LoginApiBaseTest {
         Response response = loginApiSteps.login("", VALID_PASSWORD);
         loginApiSteps.assertBadRequestWithMessage(
                 response,
-                INVALID_REQUEST_PAYLOAD_MESSAGE
-        );
+                INVALID_REQUEST_PAYLOAD_MESSAGE);
     }
 
     @Tag("api")

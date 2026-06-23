@@ -32,4 +32,17 @@ public class RecoveryApiSteps {
                 .body("error", equalTo("Unauthorized"))
                 .body("message", equalTo("Missing authentication"));
     }
+
+    public Response verifyPhoneNumber(String fullPhoneNumber) {
+        return given()
+                .spec(requestSpec)
+                .contentType("application/json") // Явно указываем тип данных JSON
+                .body(String.format("""
+                    {
+                      "phone": "%s"
+                    }
+                    """, fullPhoneNumber))
+                .when()
+                .post("/ecommerce/client/v2/phone/verify"); // Эндпоинт верификации со скриншота
+    }
 }

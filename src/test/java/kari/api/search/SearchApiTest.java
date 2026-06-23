@@ -2,10 +2,7 @@ package kari.api.search;
 
 import io.restassured.response.Response;
 import jdk.jfr.Description;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.lessThan;
@@ -21,7 +18,7 @@ public class SearchApiTest {
     }
 
     @Tag("api")
-    @Description("Поиск товара по валидному запросу должен возвращать успешный ответ")
+    @DisplayName("Поиск товара по валидному запросу должен возвращать успешный ответ")
     @Test
     public void searchByValidQueryShouldReturnSuccessResponse() {
         Response response = searchApiSteps.searchProduct("кроссовки");
@@ -29,7 +26,7 @@ public class SearchApiTest {
     }
 
     @Tag("api")
-    @Description("Поиск с пустым запросом должен возвращать успешный ответ")
+    @DisplayName("Поиск с пустым запросом должен возвращать успешный ответ")
     @Test
     public void searchWithEmptyQueryShouldReturn200() {
         Response response = searchApiSteps.searchProduct("");
@@ -37,15 +34,16 @@ public class SearchApiTest {
     }
 
     @Tag("api")
-    @Description( "Поиск по несуществующему запросу должен возвращать успешный ответ")
+    @DisplayName( "Поиск по несуществующему запросу должен возвращать успешный ответ")
     @Test
     public void searchWithNonExistingQueryShouldReturn200() {
-        Response response = searchApiSteps.searchProduct("абракадабра123456789");
+        Response response = searchApiSteps.searchProduct("xyzqweasdf_notfound");
         assertSuccessfulSearchResponse(response);
+        response.then().body("search_query_original", org.hamcrest.Matchers.equalTo("xyzqweasdf_notfound"));
     }
 
     @Tag("api")
-    @Description("Поиск со спецсимволами должен возвращать успешный ответ")
+    @DisplayName("Поиск со спецсимволами должен возвращать успешный ответ")
     @Test
     public void searchWithSpecialCharactersShouldReturn200() {
         Response response = searchApiSteps.searchProduct("@#$%^&*");
