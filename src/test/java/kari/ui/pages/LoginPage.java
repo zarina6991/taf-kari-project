@@ -21,7 +21,7 @@ public class LoginPage extends BasePage {
     private static final String PASSWORD_INPUT = "//input[@type='password' or contains(@placeholder, 'Пароль')]";
     private static final String SUBMIT_LOGIN_BUTTON = "//button[@type='submit'][span[text()='Войти']]";
     private static final String ERROR_MESSAGE_FOR_PHONE_NUMBER = "//p[contains(text(), 'Некорректный номер телефона')]";
-    public static final String USER_PROFILE_NAME = "//*[contains(text(), 'Заррина')]";
+    public static final  String USER_PROFILE_NAME = "//*[contains(text(), 'Заррина')]";
     private static final String ERROR_MESSAGE = "//p[@color='error' and contains(text(), 'Введите свой телефон или e-mail')]";
     private static final String REQUIRED_FIELD_ERROR = "//*[contains(text(), 'Обязательное поле')]";
     private static final String ERROR_POPUP_MESSAGE = "//li[contains(@class, 'e2g6g1t0')]//p";

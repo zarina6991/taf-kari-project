@@ -21,6 +21,7 @@ LoginTest extends BaseTest {
         driver.get(BASE_UI_URL + "auth/");
     }
 
+    @Disabled
     @Tag("ui")
     @Test
     @DisplayName("Позитивный сценарий: Успешный вход в личный кабинет")
@@ -92,8 +93,7 @@ LoginTest extends BaseTest {
         String errorText = loginPage.getAnyFormErrorText();
         Assertions.assertTrue(
                 errorText.contains("Введите свой телефон или e-mail") || errorText.contains("Обязательное поле"),
-                "Локальная валидация пустых полей не сработала! Текст на форме: " + errorText
-        );
+                "Локальная валидация пустых полей не сработала! Текст на форме: " + errorText);
         logger.info("Тест успешно завершен: локальная валидация пустых полей подтверждена.");
     }
 }

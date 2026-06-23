@@ -11,7 +11,6 @@ public class LoginApiBaseTest extends BaseApiTest {
     protected static final String VALID_PASSWORD = "4444444";
     protected static final String WRONG_PASSWORD = "3333356666666";
     protected static final String INVALID_EMAIL = "parpievazarrina11gmail.com";
-
     protected static final String INVALID_REQUEST_PAYLOAD_MESSAGE = "Invalid request payload input";
     protected static final String WRONG_LOGIN_OR_PASSWORD_MESSAGE = "Неверный логин или пароль";
 
@@ -27,7 +26,6 @@ public class LoginApiBaseTest extends BaseApiTest {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Не передано значение системного свойства: " + propertyName);
         }
-
         return value;
     }
 }
