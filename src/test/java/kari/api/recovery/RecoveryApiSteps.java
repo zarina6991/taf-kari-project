@@ -1,5 +1,6 @@
 package kari.api.recovery;
 
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -16,6 +17,7 @@ public class RecoveryApiSteps {
         this.requestSpec = requestSpec;
     }
 
+    @Step("Выполнение POST запроса на восстановление (информация о клиенте) без токена авторизации")
     public Response recoveryWithoutAuthentication() {
         return given()
                 .spec(requestSpec)
@@ -24,6 +26,7 @@ public class RecoveryApiSteps {
                 .post(RECOVERY_ENDPOINT);
     }
 
+    @Step("Проверка ошибки авторизации: статус 401 'Unauthorized' и сообщение 'Missing authentication'")
     public void assertMissingAuthenticationResponse(Response response) {
         response.then()
                 .log().ifValidationFails()
@@ -33,6 +36,7 @@ public class RecoveryApiSteps {
                 .body("message", equalTo("Missing authentication"));
     }
 
+    @Step("Выполнение POST запроса на верификацию номера телефона: '{fullPhoneNumber}'")
     public Response verifyPhoneNumber(String fullPhoneNumber) {
         return given()
                 .spec(requestSpec)

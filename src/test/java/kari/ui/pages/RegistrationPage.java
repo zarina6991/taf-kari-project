@@ -1,5 +1,6 @@
 package kari.ui.pages;
 
+import io.qameta.allure.Step;
 import kari.ui.base.BasePage;
 import org.openqa.selenium.WebDriver;
 
@@ -14,19 +15,23 @@ public class RegistrationPage extends BasePage {
         super(driver);
     }
 
+    @Step("UI: Ввод номера телефона '{phone}' и клик по кнопке 'Получить код'")
     public void enterPhoneAndRequestCode(String phone) {
         find(PHONE_INPUT).sendKeys(phone);
         click(GET_CODE_BUTTON);
     }
 
+    @Step("UI: Клик по кнопке 'Получить код' без ввода номера телефона")
     public void clickGetCodeButtonOnly() {
         click(GET_CODE_BUTTON);
     }
 
+    @Step("UI: Считывание текста ошибки валидации на форме регистрации")
     public String getValidationErrorText() {
         return getText(ERROR_MESSAGE);
     }
 
+    @Step("UI: Проверка отображения модального окна капчи")
     public boolean isCaptchaDisplayed() {
         return isElementVisible(CAPTCHA_HEADER);
     }

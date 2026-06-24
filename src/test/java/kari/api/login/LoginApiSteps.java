@@ -1,5 +1,6 @@
 package kari.api.login;
 
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -19,6 +20,7 @@ public class LoginApiSteps {
         this.requestSpec = requestSpec;
     }
 
+    @Step("Выполнение POST запроса на авторизацию. Логин: '{login}', Пароль: '*****'")
     public Response login(String login, String password) {
         return given()
                 .spec(requestSpec)
@@ -27,6 +29,7 @@ public class LoginApiSteps {
                 .post(LOGIN_ENDPOINT);
     }
 
+    @Step("Выполнение POST запроса на авторизацию с пустым телом")
     public Response loginWithEmptyBody() {
         return given()
                 .spec(requestSpec)
@@ -34,6 +37,7 @@ public class LoginApiSteps {
                 .post(LOGIN_ENDPOINT);
     }
 
+    @Step("Проверка успешного ответа авторизации: статус 200 OK, тело не пустое, время ответа < 5с")
     public void assertSuccessfulLoginResponse(Response response) {
         response.then()
                 .log().ifValidationFails()
@@ -42,6 +46,7 @@ public class LoginApiSteps {
                 .body(not(emptyString()));
     }
 
+    @Step("Проверка ошибки: ожидается статус 400 'Bad Request' и сообщение: '{expectedMessage}'")
     public void assertBadRequestWithMessage(Response response, String expectedMessage) {
         response.then()
                 .log().ifValidationFails()
@@ -50,6 +55,7 @@ public class LoginApiSteps {
                 .body("message", equalTo(expectedMessage));
     }
 
+    @Step("Проверка ошибки на пустое тело: ожидается статус 400, непустой ответ и сообщение: '{expectedMessage}'")
     public void assertBadRequestWithNotEmptyBody(Response response, String expectedMessage) {
         response.then()
                 .log().ifValidationFails()

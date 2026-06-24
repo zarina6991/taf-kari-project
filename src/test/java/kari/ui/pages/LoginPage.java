@@ -1,5 +1,6 @@
 package kari.ui.pages;
 
+import io.qameta.allure.Step;
 import kari.ui.base.BasePage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,11 +32,13 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
+    @Step("UI: Открытие страницы авторизации")
     public void openLoginPage() {
         logger.info("Открытие страницы авторизации по URL: {}", BASE_UI_URL + "auth/");
         open(BASE_UI_URL + "auth/");
     }
 
+    @Step("UI: Авторизация пользователя с логином: '{username}' и паролем: '*****'")
     public void loginWithCredentials(String username, String password) {
         logger.info("Ввод логина (длина: {} символов)", username.length());
         find(PHONE_OR_EMAIL_INPUT).clear();
@@ -47,12 +50,14 @@ public class LoginPage extends BasePage {
         click(SUBMIT_LOGIN_BUTTON);
     }
 
+    @Step("UI: Авторизация с использованием системных свойств окружения")
     public void loginWithSystemProperties() {
         String login = getRequiredSystemProperty("kari.login");
         String password = getRequiredSystemProperty("kari.password");
         this.loginWithCredentials(login, password);
     }
 
+    @Step("UI: Получение текста всплывающего сообщения об ошибке (Popup)")
     public String isErrorMessageDisplayed() {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -78,6 +83,7 @@ public class LoginPage extends BasePage {
         return profileText;
     }
 
+    @Step("UI: Считывание текста ошибки валидации с формы авторизации")
     public String getAnyFormErrorText() {
         logger.info("Ожидание появления сообщения об ошибке на форме...");
         try {

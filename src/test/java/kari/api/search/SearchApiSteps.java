@@ -1,5 +1,6 @@
 package kari.api.search;
 
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -17,6 +18,7 @@ public class SearchApiSteps {
                 .get(SEARCH_ENDPOINT);
     }
 
+    @Step("Выполнение GET запроса на поиск товара по ключевому слову: '{searchQuery}'")
     private RequestSpecification searchRequestWithDefaultParams(String searchQuery) {
         return given()
                 .log().ifValidationFails()

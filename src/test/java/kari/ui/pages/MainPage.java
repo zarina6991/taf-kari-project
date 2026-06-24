@@ -1,5 +1,6 @@
 package kari.ui.pages;
 
+import io.qameta.allure.Step;
 import kari.ui.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,19 +23,23 @@ public class MainPage extends BasePage {
         super(driver);
     }
 
+    @Step("UI: Ожидание открытия главной страницы (валидация по копирайту в футере)")
     public WebElement checkMainPageOpened() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(FOOTER_COPIRIGHT)));
     }
 
+    @Step("UI: Клик по логотипу для перехода на главную страницу")
     public void clickLogo() {
         click(LOGO_XPATH);
     }
 
+    @Step("UI: Клик по иконке корзины")
     public void clickCartIcon() {
         click(CART_ICON_XPATH);
     }
 
+    @Step("UI: Получение списка названий элементов главного навигационного меню")
     public List<String> getActualMenuItems() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         List<WebElement> elements = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(MENU_ITEMS_LOCATOR)));
