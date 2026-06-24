@@ -1,5 +1,6 @@
 package kari.api.registration;
 
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -15,6 +16,7 @@ public class RegistrationApiSteps {
         this.requestSpec = requestSpec;
     }
 
+    @Step("Выполнение POST запроса на отправку кода регистрации для номера: '{phone}'")
     public Response sendRegistrationCode(String phone) {
         return given()
                 .spec(requestSpec)
@@ -23,6 +25,7 @@ public class RegistrationApiSteps {
                 .post(PHONE_VERIFY_V2_ENDPOINT);
     }
 
+    @Step("Выполнение POST запроса на отправку кода регистрации с пустым телом")
     public Response sendRegistrationCodeWithEmptyBody() {
         return given()
                 .spec(requestSpec)
@@ -30,6 +33,7 @@ public class RegistrationApiSteps {
                 .post(PHONE_VERIFY_V2_ENDPOINT);
     }
 
+    @Step("Выполнение POST запроса на подтверждение кода регистрации. Номер: '{phone}', Код: '*****'")
     public Response confirmRegistrationCode(String phone, String code) {
         return given()
                 .spec(requestSpec)

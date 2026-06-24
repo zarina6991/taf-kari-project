@@ -1,5 +1,6 @@
 package kari.ui.pages;
 
+import io.qameta.allure.Step;
 import kari.ui.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +14,6 @@ import static kari.ui.tests.BaseTest.BASE_UI_URL;
 public class RecoveryPage extends BasePage {
 
     private static final String RECOVERY_URL = BASE_UI_URL + "auth/recovery/?redirection=";
-
     private static final String PHONE_INPUT_XPATH = "//input[@name='phone']";
     private static final String GET_CODE_BUTTON_XPATH = "//button[contains(., 'Получить код')]";
     private static final String CLOSE_CAPTCHA_BUTTON_XPATH = "//h3[contains(text(), 'вы точно не робот')]/following-sibling::button";
@@ -24,20 +24,24 @@ public class RecoveryPage extends BasePage {
         super(driver);
     }
 
+    @Step("UI: Открытие страницы восстановления аккаунта")
     public void openRecoveryPage() {
         open(RECOVERY_URL);
     }
 
+    @Step("UI: Ввод номера телефона без кода страны: '{phoneWithoutCountryCode}'")
     public void enterPhoneNumber(String phoneWithoutCountryCode) {
         WebElement input = find(PHONE_INPUT_XPATH);
         input.click();
         input.sendKeys(phoneWithoutCountryCode);
     }
 
+    @Step("UI: Клик по кнопке 'Получить код'")
     public void clickGetCode() {
         click(GET_CODE_BUTTON_XPATH);
     }
 
+    @Step("UI: Проверка, что поле ввода телефона подсвечено как ошибочное (aria-invalid=true)")
     public void checkPhoneInputHasError() {
         WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
         WebElement phoneInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PHONE_INPUT_XPATH)));
@@ -49,6 +53,7 @@ public class RecoveryPage extends BasePage {
         }
     }
 
+    @Step("UI: Проверка видимости поля ввода телефона для пользователя")
     public void checkPhoneInputIsVisible() {
         WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
         WebElement phoneInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PHONE_INPUT_XPATH)));
@@ -57,6 +62,7 @@ public class RecoveryPage extends BasePage {
         }
     }
 
+    @Step("UI: Закрытие модального окна капчи через JavaScript")
     public void closeCaptchaModal() {
         WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
         WebElement closeButton = wait.until(
@@ -66,6 +72,7 @@ public class RecoveryPage extends BasePage {
         js.executeScript("arguments[0].click();", closeButton);
     }
 
+    @Step("UI: Проверка, что модальное окно капчи успешно скрылось и доступно поле ввода кода")
     public void checkSmsCodeInputIsVisible() {
         WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
         wait.until(
