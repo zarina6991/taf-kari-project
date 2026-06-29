@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Assertions;
 public class SearchSteps {
 
     private final SearchPage searchPage = new SearchPage(WebDriverManager.getDriver());
-    private static final String BASE_URL = "https://kari.com"; // Измените URL, если у вас другой в BaseTest
+    private static final String BASE_URL = "https://kari.com";
 
     @Given("Пользователь открывает главную страницу сайта")
     public void openMainPage() {
